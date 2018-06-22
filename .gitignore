@@ -1,6 +1,9 @@
 # Ignore the CMakeList.txt in root folder
 /CMakeLists.txt
 
+# Ignore MacOS system file
+.DS_Store
+
 devel/
 logs/
 build/

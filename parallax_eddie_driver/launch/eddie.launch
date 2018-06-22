@@ -1,0 +1,25 @@
+<!--%Tag(FULL)%-->
+<launch>
+
+	<param name="serial_port" value="/dev/ttyUSB0" />
+	<param name="angular_scale" value="2.0" />
+	<param name="linear_scale" value="3.0" />
+	<param name="left_power" value="32" />
+	<param name="right_power" value="32" />
+	<param name="rotation_power" value="70" />
+	<param name="acceleration_power" value="30" />
+	<param name="deceleration_power" value="100" />
+	<param name="min_power" value="32"/>
+	<param name="left_speed" value="36" />
+	<param name="right_speed" value="36" />
+	<param name="rotation_speed" value="36" />
+	<param name="acceleration_speed" value="100" />
+	
+	<node pkg="parallax_eddie_driver" type="eddie" name="eddie" />
+	<node pkg="parallax_eddie_driver" type="eddie_ping" name="eddie_ping" />
+	<node pkg="parallax_eddie_driver" type="eddie_adc" name="eddie_adc" />
+	<node pkg="parallax_eddie_driver" type="eddie_controller" name="eddie_controller" />
+	<node pkg="parallax_eddie_driver" type="eddie_teleop" name="eddie_teleop" output="screen" />
+	
+</launch>
+<!--%EndTag(FULL)%-->
