@@ -1,3 +1,6 @@
+# Ignore the CMakeList.txt in root folder
+/CMakeLists.txt
+
 devel/
 logs/
 build/
