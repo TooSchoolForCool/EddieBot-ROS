@@ -73,7 +73,9 @@ private:
     sem_t mutex_execute_;
     sem_t mutex_interrupt_;
     sem_t mutex_state_;
-    sem_t mutex_ping_, mutex_ir_;
+    sem_t mutex_ping_;
+    sem_t mutex_ir_;
+    
     int left_power_, right_power_, rotation_power_;
     int acceleration_power_, deceleration_power_, min_power_;
     int left_speed_, right_speed_, rotation_speed_, acceleration_speed_;

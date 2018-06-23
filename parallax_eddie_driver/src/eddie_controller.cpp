@@ -40,18 +40,6 @@ EddieController::EddieController() :
   left_speed_(36), right_speed_(36), rotation_speed_(36), acceleration_speed_(36),
   linear_scale_(1.0), angular_scale_(1.0)
 {
-  velocity_sub_ = node_handle_.subscribe("/eddie/command_velocity", 1, &EddieController::velocityCallback, this);
-  ping_distances_sub_ = node_handle_.subscribe("/eddie/ping_distances", 1, &EddieController::distanceCallback, this);
-  ir_distances_sub_ = node_handle_.subscribe("/eddie/ir_voltages", 1, &EddieController::irCallback, this);
-  eddie_status_srv_ = node_handle_.advertiseService("emergency_status", &EddieController::getStatus, this);
-  eddie_drive_power_ = node_handle_.serviceClient<parallax_eddie_driver::DriveWithPower > ("drive_with_power");
-  eddie_drive_speed_ = node_handle_.serviceClient<parallax_eddie_driver::DriveWithSpeed > ("drive_with_speed");
-  eddie_acceleration_rate_ = node_handle_.serviceClient<parallax_eddie_driver::Accelerate > ("acceleration_rate");
-  eddie_turn_ = node_handle_.serviceClient<parallax_eddie_driver::Rotate > ("rotate");
-  eddie_stop_ = node_handle_.serviceClient<parallax_eddie_driver::StopAtDistance > ("stop_at_distance");
-  eddie_heading_ = node_handle_.serviceClient<parallax_eddie_driver::GetHeading > ("get_heading");
-  eddie_reset_ = node_handle_.serviceClient<parallax_eddie_driver::ResetEncoder > ("reset_encoder");
-
   node_handle_.param("left_power", left_power_, left_power_);
   node_handle_.param("right_power", right_power_, right_power_);
   node_handle_.param("rotation_power", rotation_power_, rotation_power_);
@@ -70,8 +58,11 @@ EddieController::EddieController() :
   sem_init(&mutex_interrupt_, 0, 1);
   sem_init(&mutex_state_, 0, 1);
   sem_init(&mutex_ping_, 0, 1);
-
+  sem_init(&mutex_ir_, 0, 1);
+  
   sem_wait(&mutex_state_);
+  sem_wait(&mutex_interrupt_);
+
   current_power_ = 16;
   left_ = 0;
   right_ = 0;
@@ -79,11 +70,25 @@ EddieController::EddieController() :
   rotate_ = false;
   process_ = false;
   last_cmd_time_ = ros::Time::now();
-  sem_post(&mutex_state_);
-  sem_wait(&mutex_interrupt_);
   interrupt_ = false;
-  sem_post(&mutex_interrupt_);
 
+  sem_post(&mutex_interrupt_);
+  sem_post(&mutex_state_);
+
+  velocity_sub_ = node_handle_.subscribe("/eddie/command_velocity", 1, &EddieController::velocityCallback, this);
+  ping_distances_sub_ = node_handle_.subscribe("/eddie/ping_distances", 1, &EddieController::distanceCallback, this);
+  ir_distances_sub_ = node_handle_.subscribe("/eddie/ir_voltages", 1, &EddieController::irCallback, this);
+  
+  eddie_status_srv_ = node_handle_.advertiseService("emergency_status", &EddieController::getStatus, this);
+  
+  eddie_drive_power_ = node_handle_.serviceClient<parallax_eddie_driver::DriveWithPower > ("drive_with_power");
+  eddie_drive_speed_ = node_handle_.serviceClient<parallax_eddie_driver::DriveWithSpeed > ("drive_with_speed");
+  eddie_acceleration_rate_ = node_handle_.serviceClient<parallax_eddie_driver::Accelerate > ("acceleration_rate");
+  eddie_turn_ = node_handle_.serviceClient<parallax_eddie_driver::Rotate > ("rotate");
+  eddie_stop_ = node_handle_.serviceClient<parallax_eddie_driver::StopAtDistance > ("stop_at_distance");
+  eddie_heading_ = node_handle_.serviceClient<parallax_eddie_driver::GetHeading > ("get_heading");
+  eddie_reset_ = node_handle_.serviceClient<parallax_eddie_driver::ResetEncoder > ("reset_encoder");
+  
   setAccelerationRate(acceleration_speed_);
 }
 
@@ -236,6 +241,7 @@ void EddieController::moveLinearAngular(float linear, int16_t angular)
 void EddieController::drive(int8_t left, int8_t right)
 {
   sem_wait(&mutex_execute_);
+
   sem_wait(&mutex_interrupt_);
   interrupt_ = false;
   bool cancel = interrupt_;
@@ -264,6 +270,7 @@ void EddieController::drive(int8_t left, int8_t right)
         power.request.right = current_power_;
         power.request.left = (int8_t) (current_power_ * ((double) left / right));
       }
+      
       if (eddie_drive_power_.call(power))
         last_cmd_time_ = ros::Time::now();
       else
@@ -287,6 +294,7 @@ void EddieController::drive(int8_t left, int8_t right)
 void EddieController::rotate(int16_t angular)
 {
   sem_wait(&mutex_execute_);
+
   sem_wait(&mutex_interrupt_);
   interrupt_ = false;
   angular_ = 0;
@@ -373,8 +381,7 @@ void EddieController::rotate(int16_t angular)
       current_power_ = 0;
     sem_post(&mutex_interrupt_);
   }
-
-
+  
   sem_post(&mutex_execute_);
 }
 
