@@ -1,0 +1,6 @@
+<launch>
+  <!-- Using keyboard to control eddiebot -->
+  <include file="$(find eddiebot_bringup)/launch/minimal.launch"></include>
+  <include file="$(find eddiebot_teleop)/launch/teleop_keyboard.launch"></include>
+
+</launch>
