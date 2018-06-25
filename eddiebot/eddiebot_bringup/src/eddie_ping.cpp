@@ -2,6 +2,7 @@
  * Software License Agreement (BSD License)
  *
  * Copyright (c) 2012, Haikal Pribadi <haikal.pribadi@gmail.com>
+ * Copyright (c) 2018, Zeyu Zhang <zeyuz@outlook.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
