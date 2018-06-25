@@ -44,19 +44,19 @@
 #include <string>
 #include <sstream>
 #include <map>
-#include <parallax_eddie_driver/Ping.h>
-#include <parallax_eddie_driver/ADC.h>
-#include <parallax_eddie_driver/Accelerate.h>
-#include <parallax_eddie_driver/DriveWithDistance.h>
-#include <parallax_eddie_driver/DriveWithPower.h>
-#include <parallax_eddie_driver/DriveWithSpeed.h>
-#include <parallax_eddie_driver/GetDistance.h>
-#include <parallax_eddie_driver/GetHeading.h>
-#include <parallax_eddie_driver/GetSpeed.h>
-#include <parallax_eddie_driver/ResetEncoder.h>
-#include <parallax_eddie_driver/Rotate.h>
-#include <parallax_eddie_driver/StopAtDistance.h>
-#include <parallax_eddie_driver/DriveWithDistance.h>
+#include <eddiebot_msgs/Ping.h>
+#include <eddiebot_msgs/ADC.h>
+#include <eddiebot_msgs/Accelerate.h>
+#include <eddiebot_msgs/DriveWithDistance.h>
+#include <eddiebot_msgs/DriveWithPower.h>
+#include <eddiebot_msgs/DriveWithSpeed.h>
+#include <eddiebot_msgs/GetDistance.h>
+#include <eddiebot_msgs/GetHeading.h>
+#include <eddiebot_msgs/GetSpeed.h>
+#include <eddiebot_msgs/ResetEncoder.h>
+#include <eddiebot_msgs/Rotate.h>
+#include <eddiebot_msgs/StopAtDistance.h>
+#include <eddiebot_msgs/DriveWithDistance.h>
 
 class Eddie {
 public:
@@ -201,8 +201,8 @@ public:
     //Send a series of 3 carriage returns to reset the FW serial buffer: "\r\r\r"
     const std::string FLUSH_BUFFERS_STRING;
 
-    parallax_eddie_driver::Ping getPingData();
-    parallax_eddie_driver::ADC getADCData();
+    eddiebot_msgs::Ping getPingData();
+    eddiebot_msgs::ADC getADCData();
 
     void publishPingData();
     void publishADCData();
@@ -233,26 +233,26 @@ private:
     std::string generateCommand(std::string str1, int num1);
     std::string generateCommand(std::string str1, int num1, int num2);
 
-    bool accelerate(parallax_eddie_driver::Accelerate::Request &req,
-            parallax_eddie_driver::Accelerate::Response &res);
-    bool driveWithDistance(parallax_eddie_driver::DriveWithDistance::Request &req,
-            parallax_eddie_driver::DriveWithDistance::Response &res);
-    bool driveWithPower(parallax_eddie_driver::DriveWithPower::Request &req,
-            parallax_eddie_driver::DriveWithPower::Response &res);
-    bool driveWithSpeed(parallax_eddie_driver::DriveWithSpeed::Request &req,
-            parallax_eddie_driver::DriveWithSpeed::Response &res);
-    bool getDistance(parallax_eddie_driver::GetDistance::Request &req,
-            parallax_eddie_driver::GetDistance::Response &res);
-    bool getHeading(parallax_eddie_driver::GetHeading::Request &req,
-            parallax_eddie_driver::GetHeading::Response &res);
-    bool GetSpeed(parallax_eddie_driver::GetSpeed::Request &req,
-            parallax_eddie_driver::GetSpeed::Response &res);
-    bool resetEncoder(parallax_eddie_driver::ResetEncoder::Request &req,
-            parallax_eddie_driver::ResetEncoder::Response &res);
-    bool rotate(parallax_eddie_driver::Rotate::Request &req,
-            parallax_eddie_driver::Rotate::Response &res);
-    bool stopAtDistance(parallax_eddie_driver::StopAtDistance::Request &req,
-            parallax_eddie_driver::StopAtDistance::Response &res);
+    bool accelerate(eddiebot_msgs::Accelerate::Request &req,
+            eddiebot_msgs::Accelerate::Response &res);
+    bool driveWithDistance(eddiebot_msgs::DriveWithDistance::Request &req,
+            eddiebot_msgs::DriveWithDistance::Response &res);
+    bool driveWithPower(eddiebot_msgs::DriveWithPower::Request &req,
+            eddiebot_msgs::DriveWithPower::Response &res);
+    bool driveWithSpeed(eddiebot_msgs::DriveWithSpeed::Request &req,
+            eddiebot_msgs::DriveWithSpeed::Response &res);
+    bool getDistance(eddiebot_msgs::GetDistance::Request &req,
+            eddiebot_msgs::GetDistance::Response &res);
+    bool getHeading(eddiebot_msgs::GetHeading::Request &req,
+            eddiebot_msgs::GetHeading::Response &res);
+    bool GetSpeed(eddiebot_msgs::GetSpeed::Request &req,
+            eddiebot_msgs::GetSpeed::Response &res);
+    bool resetEncoder(eddiebot_msgs::ResetEncoder::Request &req,
+            eddiebot_msgs::ResetEncoder::Response &res);
+    bool rotate(eddiebot_msgs::Rotate::Request &req,
+            eddiebot_msgs::Rotate::Response &res);
+    bool stopAtDistance(eddiebot_msgs::StopAtDistance::Request &req,
+            eddiebot_msgs::StopAtDistance::Response &res);
 };
 
 #endif	/* _EDDIE_H */

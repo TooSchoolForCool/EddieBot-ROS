@@ -79,8 +79,8 @@ Eddie::Eddie() :
   FLUSH_BUFFERS_STRING("\r\r\r")
 {
   sem_init(&mutex, 0, 1);
-  ping_pub_ = node_handle_.advertise<parallax_eddie_driver::Ping > ("/eddie/ping_data", 1);
-  adc_pub_ = node_handle_.advertise<parallax_eddie_driver::ADC > ("/eddie/adc_data", 1);
+  ping_pub_ = node_handle_.advertise<eddiebot_msgs::Ping > ("/eddie/ping_data", 1);
+  adc_pub_ = node_handle_.advertise<eddiebot_msgs::ADC > ("/eddie/adc_data", 1);
 
   accelerate_srv_ = node_handle_.advertiseService("acceleration_rate", &Eddie::accelerate, this);
   drive_with_distance_srv_ = node_handle_.advertiseService("drive_with_distance", &Eddie::driveWithDistance, this);
@@ -194,11 +194,11 @@ std::string Eddie::intToHexString(int num)
   return ss.str();
 }
 
-parallax_eddie_driver::Ping Eddie::getPingData()
+eddiebot_msgs::Ping Eddie::getPingData()
 {
   std::string result = command(GET_PING_VALUE_STRING);
   //std::string result = "133 3C9 564 0F9 29B 0F0 31A 566 1E0 A97\r";
-  parallax_eddie_driver::Ping ping_data;
+  eddiebot_msgs::Ping ping_data;
   if (result.size() <= 1)
   {
     ping_data.status = "EMPTY";
@@ -227,11 +227,11 @@ parallax_eddie_driver::Ping Eddie::getPingData()
   return ping_data;
 }
 
-parallax_eddie_driver::ADC Eddie::getADCData()
+eddiebot_msgs::ADC Eddie::getADCData()
 {
   std::string result = command(GET_ADC_VALUE_STRING);
   //std::string result = "9C7 11E E4E 5AB 20F 97B 767 058\r";
-  parallax_eddie_driver::ADC adc_data;
+  eddiebot_msgs::ADC adc_data;
   if (result.size() <= 1)
   {
     adc_data.status = "EMPTY";
@@ -270,8 +270,8 @@ void Eddie::publishADCData()
   adc_pub_.publish(getADCData());
 }
 
-bool Eddie::accelerate(parallax_eddie_driver::Accelerate::Request &req,
-  parallax_eddie_driver::Accelerate::Response &res)
+bool Eddie::accelerate(eddiebot_msgs::Accelerate::Request &req,
+  eddiebot_msgs::Accelerate::Response &res)
 {
   //this feature does not need to validate the parameters due the limited range of parameter data type
   std::string cmd;
@@ -283,8 +283,8 @@ bool Eddie::accelerate(parallax_eddie_driver::Accelerate::Request &req,
     return false;
 }
 
-bool Eddie::driveWithDistance(parallax_eddie_driver::DriveWithDistance::Request &req,
-  parallax_eddie_driver::DriveWithDistance::Response &res)
+bool Eddie::driveWithDistance(eddiebot_msgs::DriveWithDistance::Request &req,
+  eddiebot_msgs::DriveWithDistance::Response &res)
 {
   //this feature does not need to validate the parameters due the limited range of parameter data type
   std::string cmd;
@@ -296,8 +296,8 @@ bool Eddie::driveWithDistance(parallax_eddie_driver::DriveWithDistance::Request 
     return false;
 }
 
-bool Eddie::driveWithPower(parallax_eddie_driver::DriveWithPower::Request &req,
-  parallax_eddie_driver::DriveWithPower::Response &res)
+bool Eddie::driveWithPower(eddiebot_msgs::DriveWithPower::Request &req,
+  eddiebot_msgs::DriveWithPower::Response &res)
 {
   if (req.left > MOTOR_POWER_MAX_FORWARD || req.right > MOTOR_POWER_MAX_FORWARD ||
       req.left < MOTOR_POWER_MAX_REVERSE || req.right < MOTOR_POWER_MAX_REVERSE)
@@ -315,8 +315,8 @@ bool Eddie::driveWithPower(parallax_eddie_driver::DriveWithPower::Request &req,
   }
 }
 
-bool Eddie::driveWithSpeed(parallax_eddie_driver::DriveWithSpeed::Request &req,
-  parallax_eddie_driver::DriveWithSpeed::Response &res)
+bool Eddie::driveWithSpeed(eddiebot_msgs::DriveWithSpeed::Request &req,
+  eddiebot_msgs::DriveWithSpeed::Response &res)
 {
   if (req.left > TRAVEL_SPEED_MAX_FORWARD || req.right > TRAVEL_SPEED_MAX_FORWARD ||
       req.left < TRAVEL_SPEED_MAX_REVERSE || req.right < TRAVEL_SPEED_MAX_REVERSE)
@@ -332,8 +332,8 @@ bool Eddie::driveWithSpeed(parallax_eddie_driver::DriveWithSpeed::Request &req,
     return false;
 }
 
-bool Eddie::getDistance(parallax_eddie_driver::GetDistance::Request &req,
-  parallax_eddie_driver::GetDistance::Response &res)
+bool Eddie::getDistance(eddiebot_msgs::GetDistance::Request &req,
+  eddiebot_msgs::GetDistance::Response &res)
 {
   std::string cmd = GET_ENCODER_TICKS_STRING;
   std::string cmd_response = command(cmd);
@@ -352,8 +352,8 @@ bool Eddie::getDistance(parallax_eddie_driver::GetDistance::Request &req,
     return false;
 }
 
-bool Eddie::getHeading(parallax_eddie_driver::GetHeading::Request &req,
-  parallax_eddie_driver::GetHeading::Response &res)
+bool Eddie::getHeading(eddiebot_msgs::GetHeading::Request &req,
+  eddiebot_msgs::GetHeading::Response &res)
 {
   std::string cmd = GET_CURRENT_HEADING_STRING;
   std::string cmd_response = command(cmd);
@@ -368,8 +368,8 @@ bool Eddie::getHeading(parallax_eddie_driver::GetHeading::Request &req,
     return false;
 }
 
-bool Eddie::GetSpeed(parallax_eddie_driver::GetSpeed::Request &req,
-  parallax_eddie_driver::GetSpeed::Response &res)
+bool Eddie::GetSpeed(eddiebot_msgs::GetSpeed::Request &req,
+  eddiebot_msgs::GetSpeed::Response &res)
 {
   std::string cmd = GET_CURRENT_SPEED_STRING;
   std::string cmd_response = command(cmd);
@@ -388,8 +388,8 @@ bool Eddie::GetSpeed(parallax_eddie_driver::GetSpeed::Request &req,
     return false;
 }
 
-bool Eddie::resetEncoder(parallax_eddie_driver::ResetEncoder::Request &req,
-  parallax_eddie_driver::ResetEncoder::Response &res)
+bool Eddie::resetEncoder(eddiebot_msgs::ResetEncoder::Request &req,
+  eddiebot_msgs::ResetEncoder::Response &res)
 {
   std::string cmd = RESET_ENCODER_TICKS_STRING;
   std::string cmd_response = command(cmd);
@@ -399,8 +399,8 @@ bool Eddie::resetEncoder(parallax_eddie_driver::ResetEncoder::Request &req,
     return false;
 }
 
-bool Eddie::rotate(parallax_eddie_driver::Rotate::Request &req,
-  parallax_eddie_driver::Rotate::Response &res)
+bool Eddie::rotate(eddiebot_msgs::Rotate::Request &req,
+  eddiebot_msgs::Rotate::Response &res)
 {
   std::string cmd;
   cmd = generateCommand(SET_ROTATE_STRING, req.angle, req.speed);
@@ -411,8 +411,8 @@ bool Eddie::rotate(parallax_eddie_driver::Rotate::Request &req,
     return false;
 }
 
-bool Eddie::stopAtDistance(parallax_eddie_driver::StopAtDistance::Request &req,
-  parallax_eddie_driver::StopAtDistance::Response &res)
+bool Eddie::stopAtDistance(eddiebot_msgs::StopAtDistance::Request &req,
+  eddiebot_msgs::StopAtDistance::Response &res)
 {
   std::string cmd;
   cmd = generateCommand(SET_STOP_DISTANCE_STRING, req.distance);

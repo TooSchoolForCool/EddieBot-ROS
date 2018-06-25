@@ -1,0 +1,7 @@
+<!--%Tag(FULL)%-->
+<launch>
+
+    <node pkg="eddiebot_teleop" type="eddie_teleop" name="eddie_teleop" output="screen" />
+    
+</launch>
+<!--%EndTag(FULL)%-->

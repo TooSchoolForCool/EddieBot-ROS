@@ -32,29 +32,39 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef _EDDIE_PING_H
-#define	_EDDIE_PING_H
+#ifndef _EDDIE_TELEOP_H
+#define _EDDIE_TELEOP_H
 
 #include <ros/ros.h>
-#include <parallax_eddie_driver/Ping.h>
-#include <parallax_eddie_driver/Distances.h>
+#include <signal.h>
+#include <termios.h>
+#include <stdio.h>
+#include <fcntl.h>
+#include <eddiebot_msgs/Velocity.h>
+#include <eddiebot_msgs/KeyStroke.h>
 
-//==============================================================================//
-// This class is provided as a template for future features on the Ping sensors //
-//==============================================================================//
+#define KEYCODE_U 0x41
+#define KEYCODE_D 0x42
+#define KEYCODE_R 0x43
+#define KEYCODE_L 0x44
 
-class EddiePing
+
+int kfd = 0;
+struct termios cooked, raw;
+
+class EddieTeleop
 {
 public:
-  EddiePing();
+  EddieTeleop();
+  void keyLoop();
 
 private:
   ros::NodeHandle node_handle_;
-  ros::Publisher ping_pub_;
-  ros::Subscriber ping_sub_;
+  ros::Publisher velocity_pub_;
+  ros::Publisher keystroke_pub_;
+  float linear_, angular_;
+  double l_scale_, a_scale_;
 
-  void pingCallback(const parallax_eddie_driver::Ping::ConstPtr& message);
 };
 
-#endif	/* _EDDIE_PING_H */
-
+#endif  /* _EDDIE_TELEOP_H */

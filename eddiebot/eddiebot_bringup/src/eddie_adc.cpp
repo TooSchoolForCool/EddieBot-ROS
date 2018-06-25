@@ -32,13 +32,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef _EDDIE_ADC_H
-#define	_EDDIE_ADC_H
-
-#include <ros/ros.h>
-#include <parallax_eddie_driver/ADC.h>
-#include <parallax_eddie_driver/BatteryLevel.h>
-#include <parallax_eddie_driver/Voltages.h>
+#include "eddie_adc.h"
 
 //=============================================================================//
 // This class is provided as a template for future features on the ADC sensors //
@@ -47,21 +41,48 @@
 // sensors and a battery sensor at the very end                                //
 //=============================================================================//
 
-class EddieADC
+EddieADC::EddieADC() :
+  ADC_VOLTAGE_DIVIDER(819),
+  BATTERY_VOLTAGE_MULTIPLIER(3.21)
 {
-public:
-  EddieADC();
+  ir_pub_ = node_handle_.advertise<eddiebot_msgs::Voltages > ("/eddie/ir_voltages", 1);
+  battery_pub_ = node_handle_.advertise<eddiebot_msgs::BatteryLevel > ("/eddie/battery_level", 1);
+  adc_sub_ = node_handle_.subscribe("/eddie/adc_data", 1, &EddieADC::adcCallback, this);
+}
 
-private:
-  ros::NodeHandle node_handle_;
-  ros::Publisher ir_pub_;
-  ros::Publisher battery_pub_;
-  ros::Subscriber adc_sub_;
-  const double ADC_VOLTAGE_DIVIDER;
-  const double BATTERY_VOLTAGE_MULTIPLIER;
+void EddieADC::adcCallback(const eddiebot_msgs::ADC::ConstPtr& message)
+{
+  eddiebot_msgs::Voltages voltages;
+  eddiebot_msgs::BatteryLevel level;
+  double v, l;
+  if (message->status.substr(0, 5) == "ERROR") // ERROR messages may be longer than 5 if in VERBOSE mode
+  {
+    ROS_ERROR("ERROR: Unable to read ADC data for IR");
+    return;
+  }
 
-  void adcCallback(const parallax_eddie_driver::ADC::ConstPtr& message);
-};
+  uint i;
+  for (i = 0; i < message->value.size() - 1; i++)
+  {
+    v = message->value[i];
+    if (v > 10)
+    {
+      v = v / ADC_VOLTAGE_DIVIDER;
+      voltages.value.push_back(v);
+    }
+  }
+  l = message->value[i];
+  l = l / ADC_VOLTAGE_DIVIDER * BATTERY_VOLTAGE_MULTIPLIER;
+  level.value = l;
+  ir_pub_.publish(voltages);
+  battery_pub_.publish(level);
+}
 
-#endif	/* _EDDIE_ADC_H */
+int main(int argc, char** argv)
+{
+  ros::init(argc, argv, "parallax_adc");
+  EddieADC adc;
+  ros::spin();
 
+  return 0;
+}

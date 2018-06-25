@@ -37,8 +37,8 @@
 EddieTeleop::EddieTeleop() :
   linear_(0), angular_(0), l_scale_(2.0), a_scale_(2.0)
 {
-  velocity_pub_ = node_handle_.advertise<parallax_eddie_driver::Velocity > ("/eddie/command_velocity", 1);
-  keystroke_pub_ = node_handle_.advertise<parallax_eddie_driver::KeyStroke > ("/eddie/key_stroke", 1);
+  velocity_pub_ = node_handle_.advertise<eddiebot_msgs::Velocity > ("/eddie/command_velocity", 1);
+  keystroke_pub_ = node_handle_.advertise<eddiebot_msgs::KeyStroke > ("/eddie/key_stroke", 1);
 
   node_handle_.param("angular_scale", a_scale_, a_scale_);
   node_handle_.param("linear_scale", l_scale_, l_scale_);
@@ -115,14 +115,14 @@ void EddieTeleop::keyLoop()
 
     if (move)
     {
-      parallax_eddie_driver::Velocity vel;
+      eddiebot_msgs::Velocity vel;
       vel.angular = angular_ * a_scale_;
       vel.linear = linear_ * l_scale_;
       velocity_pub_.publish(vel);
       move = false;
     }
     if(c!=-1){
-      parallax_eddie_driver::KeyStroke key;
+      eddiebot_msgs::KeyStroke key;
       key.keycode = c;
       keystroke_pub_.publish(key);
     }
@@ -147,4 +147,3 @@ int main(int argc, char** argv)
 
   return (EXIT_SUCCESS);
 }
-

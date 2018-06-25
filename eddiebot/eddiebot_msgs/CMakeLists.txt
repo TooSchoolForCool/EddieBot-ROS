@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(parallax_eddie_driver)
+project(eddiebot_msgs)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -11,7 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
   std_msgs
-  genmsg
+  geometry_msgs
   message_generation
 )
 
@@ -61,6 +61,7 @@ add_message_files(
   Voltages.msg
 )
 
+
 ## Generate services in the 'srv' folder
 add_service_files(
   FILES
@@ -76,6 +77,7 @@ add_service_files(
   Rotate.srv
   StopAtDistance.srv
 )
+
 
 ## Generate actions in the 'action' folder
 # add_action_files(
@@ -120,8 +122,8 @@ generate_messages(
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
- # INCLUDE_DIRS include
-#  LIBRARIES parallax_eddie_driver
+#  INCLUDE_DIRS include
+#  LIBRARIES eddiebot_msgs
 #  CATKIN_DEPENDS roscpp rospy std_msgs
 #  DEPENDS system_lib
 )
@@ -133,13 +135,13 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-  include
+# include
   ${catkin_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/parallax_eddie_driver.cpp
+#   src/${PROJECT_NAME}/eddiebot_msgs.cpp
 # )
 
 ## Add cmake target dependencies of the library
@@ -150,7 +152,7 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/parallax_eddie_driver_node.cpp)
+# add_executable(${PROJECT_NAME}_node src/eddiebot_msgs_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -166,26 +168,6 @@ include_directories(
 # target_link_libraries(${PROJECT_NAME}_node
 #   ${catkin_LIBRARIES}
 # )
-
-add_executable(eddie src/eddie.cpp)
-target_link_libraries(eddie ${catkin_LIBRARIES})
-add_dependencies(eddie ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-
-add_executable(eddie_adc src/eddie_adc.cpp)
-target_link_libraries(eddie_adc ${catkin_LIBRARIES})
-add_dependencies(eddie_adc ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-
-add_executable(eddie_ping src/eddie_ping.cpp)
-target_link_libraries(eddie_ping ${catkin_LIBRARIES})
-add_dependencies(eddie_ping ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-
-add_executable(eddie_teleop src/eddie_teleop.cpp)
-target_link_libraries(eddie_teleop ${catkin_LIBRARIES})
-add_dependencies(eddie_teleop ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-
-add_executable(eddie_controller src/eddie_controller.cpp)
-target_link_libraries(eddie_controller ${catkin_LIBRARIES})
-add_dependencies(eddie_controller ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 #############
 ## Install ##
@@ -227,7 +209,7 @@ add_dependencies(eddie_controller ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_E
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_parallax_eddie_driver.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_eddiebot_msgs.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()

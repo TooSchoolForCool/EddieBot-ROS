@@ -81,18 +81,18 @@ EddieController::EddieController() :
   
   eddie_status_srv_ = node_handle_.advertiseService("emergency_status", &EddieController::getStatus, this);
   
-  eddie_drive_power_ = node_handle_.serviceClient<parallax_eddie_driver::DriveWithPower > ("drive_with_power");
-  eddie_drive_speed_ = node_handle_.serviceClient<parallax_eddie_driver::DriveWithSpeed > ("drive_with_speed");
-  eddie_acceleration_rate_ = node_handle_.serviceClient<parallax_eddie_driver::Accelerate > ("acceleration_rate");
-  eddie_turn_ = node_handle_.serviceClient<parallax_eddie_driver::Rotate > ("rotate");
-  eddie_stop_ = node_handle_.serviceClient<parallax_eddie_driver::StopAtDistance > ("stop_at_distance");
-  eddie_heading_ = node_handle_.serviceClient<parallax_eddie_driver::GetHeading > ("get_heading");
-  eddie_reset_ = node_handle_.serviceClient<parallax_eddie_driver::ResetEncoder > ("reset_encoder");
+  eddie_drive_power_ = node_handle_.serviceClient<eddiebot_msgs::DriveWithPower > ("drive_with_power");
+  eddie_drive_speed_ = node_handle_.serviceClient<eddiebot_msgs::DriveWithSpeed > ("drive_with_speed");
+  eddie_acceleration_rate_ = node_handle_.serviceClient<eddiebot_msgs::Accelerate > ("acceleration_rate");
+  eddie_turn_ = node_handle_.serviceClient<eddiebot_msgs::Rotate > ("rotate");
+  eddie_stop_ = node_handle_.serviceClient<eddiebot_msgs::StopAtDistance > ("stop_at_distance");
+  eddie_heading_ = node_handle_.serviceClient<eddiebot_msgs::GetHeading > ("get_heading");
+  eddie_reset_ = node_handle_.serviceClient<eddiebot_msgs::ResetEncoder > ("reset_encoder");
   
   setAccelerationRate(acceleration_speed_);
 }
 
-void EddieController::velocityCallback(const parallax_eddie_driver::Velocity::ConstPtr& message)
+void EddieController::velocityCallback(const eddiebot_msgs::Velocity::ConstPtr& message)
 {
   float linear = message->linear;
   int16_t angular = message->angular;
@@ -115,7 +115,7 @@ void EddieController::velocityCallback(const parallax_eddie_driver::Velocity::Co
   }
 }
 
-void EddieController::distanceCallback(const parallax_eddie_driver::Distances::ConstPtr& message)
+void EddieController::distanceCallback(const eddiebot_msgs::Distances::ConstPtr& message)
 {
   sem_wait(&mutex_ping_);
   bool okay = true;
@@ -130,7 +130,7 @@ void EddieController::distanceCallback(const parallax_eddie_driver::Distances::C
   sem_post(&mutex_ping_);
 }
 
-void EddieController::irCallback(const parallax_eddie_driver::Voltages::ConstPtr& message)
+void EddieController::irCallback(const eddiebot_msgs::Voltages::ConstPtr& message)
 {
   sem_wait(&mutex_ir_);
   bool okay = true;
@@ -145,8 +145,8 @@ void EddieController::irCallback(const parallax_eddie_driver::Voltages::ConstPtr
   sem_post(&mutex_ir_);
 }
 
-bool EddieController::getStatus(parallax_eddie_driver::GetStatus::Request& req,
-  parallax_eddie_driver::GetStatus::Response& res)
+bool EddieController::getStatus(eddiebot_msgs::GetStatus::Request& req,
+  eddiebot_msgs::GetStatus::Response& res)
 {
   sem_wait(&mutex_ping_);
   sem_wait(&mutex_ir_);
@@ -163,7 +163,7 @@ bool EddieController::getStatus(parallax_eddie_driver::GetStatus::Request& req,
 
 void EddieController::stop()
 {
-  parallax_eddie_driver::StopAtDistance dist;
+  eddiebot_msgs::StopAtDistance dist;
   dist.request.distance = 4;
 
   sem_wait(&mutex_interrupt_);
@@ -178,7 +178,7 @@ void EddieController::stop()
 
 void EddieController::setAccelerationRate(int rate)
 {
-  parallax_eddie_driver::Accelerate acc;
+  eddiebot_msgs::Accelerate acc;
   acc.request.rate = acceleration_speed_;
   if (!eddie_acceleration_rate_.call(acc))
     ROS_ERROR("ERROR: Failed to set acceleration rate to %d", rate);
@@ -247,7 +247,7 @@ void EddieController::drive(int8_t left, int8_t right)
   bool cancel = interrupt_;
   sem_post(&mutex_interrupt_);
 
-  parallax_eddie_driver::DriveWithPower power;
+  eddiebot_msgs::DriveWithPower power;
   ros::Time now;
   bool shift = true;
   int8_t previous_power = 0;
@@ -302,14 +302,14 @@ void EddieController::rotate(int16_t angular)
   sem_post(&mutex_interrupt_);
 
   //angular = 0.75 * angular;
-  parallax_eddie_driver::DriveWithPower power;
-  parallax_eddie_driver::GetHeading heading;
+  eddiebot_msgs::DriveWithPower power;
+  eddiebot_msgs::GetHeading heading;
   ros::Time now;
   bool shift = true, headed = false;
   int16_t init_angle = 0, target_angle;
   int8_t left, right, previous_power;
 
-  parallax_eddie_driver::ResetEncoder reset;
+  eddiebot_msgs::ResetEncoder reset;
   eddie_reset_.call(reset);
   for (int i = 0; !(headed = eddie_heading_.call(heading)) && i < 5; i++)
     usleep(100);
@@ -355,7 +355,7 @@ void EddieController::rotate(int16_t angular)
 
       if (!shift)
       {
-        parallax_eddie_driver::StopAtDistance dist;
+        eddiebot_msgs::StopAtDistance dist;
         dist.request.distance = 2;
         for (int i = 0; !eddie_stop_.call(dist) && i < 5; i++)
           ROS_ERROR("ERROR: at trying to stop Eddie. Trying to auto send command again...");
