@@ -3,7 +3,7 @@
   <name>eddiebot_description</name>
   <version>1.0.0</version>
   <description>
-     The eddie_description provides a complete 3D model of the EddieBot for simulation and visualization.
+     The eddiebot_description provides a complete 3D model of the EddieBot for simulation and visualization.
   </description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
