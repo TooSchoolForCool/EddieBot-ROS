@@ -26,8 +26,8 @@
   -->
   
   <arg name="database_path"     default="rtabmap.db"/>
-  <arg name="rgbd_odometry"     default="false"/>
-  <arg name="rtabmapviz"        default="false"/>
+  <arg name="rgbd_odometry"     default="true"/>
+  <arg name="rtabmapviz"        default="true"/>
   <arg name="localization"      default="false"/>
   <arg name="simulation"        default="false"/>
   <arg     if="$(arg localization)" name="args"  default=""/>
@@ -57,11 +57,11 @@
       <param name="frame_id"            type="string" value="base_footprint"/>
       <param name="wait_for_transform_duration"  type="double"   value="$(arg wait_for_transform)"/>
       <param name="subscribe_depth"     type="bool"   value="true"/>
-      <param name="subscribe_scan"      type="bool"   value="true"/>
+      <!-- <param name="subscribe_scan"      type="bool"   value="true"/> -->
       <param name="map_negative_poses_ignored" type="bool" value="true"/>
     
       <!-- inputs -->
-      <remap from="scan"            to="/scan"/>
+      <!-- <remap from="scan"            to="/scan"/> -->
       <remap from="rgb/image"       to="$(arg rgb_topic)"/>
       <remap from="depth/image"     to="$(arg depth_topic)"/>
       <remap from="rgb/camera_info" to="$(arg camera_info_topic)"/>
@@ -110,14 +110,14 @@
     <!-- visualization with rtabmapviz -->
     <node if="$(arg rtabmapviz)" pkg="rtabmap_ros" type="rtabmapviz" name="rtabmapviz" args="-d $(find rtabmap_ros)/launch/config/rgbd_gui.ini" output="screen">
       <param name="subscribe_depth"             type="bool" value="true"/>
-      <param name="subscribe_scan"              type="bool" value="true"/>
+      <!-- <param name="subscribe_scan"              type="bool" value="true"/> -->
       <param name="frame_id"                    type="string" value="base_footprint"/>
       <param name="wait_for_transform_duration" type="double" value="$(arg wait_for_transform)"/>
     
       <remap from="rgb/image"       to="$(arg rgb_topic)"/>
       <remap from="depth/image"     to="$(arg depth_topic)"/>
       <remap from="rgb/camera_info" to="$(arg camera_info_topic)"/>
-      <remap from="scan"            to="/scan"/>
+      <!-- <remap from="scan"            to="/scan"/> -->
     </node>
     
   </group>

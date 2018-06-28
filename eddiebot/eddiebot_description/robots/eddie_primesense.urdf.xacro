@@ -21,7 +21,7 @@
   <xacro:include filename="$(find eddiebot_description)/urdf/stacks/camera_stand.urdf.xacro"/>
 
   <!-- Primesense Carmine Sensor -->
-  <xacro:include filename="$(find eddiebot_description)/urdf/sensors/primesense_carmine.urdf.xacro"/>
+  <xacro:include filename="$(find eddiebot_description)/urdf/sensors/primesense_carmine_camera_link_only.urdf.xacro"/>
 
   <create_base/>
   <circle_stack parent="base_link"/>
