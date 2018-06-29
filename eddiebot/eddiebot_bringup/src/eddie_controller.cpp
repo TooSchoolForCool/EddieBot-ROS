@@ -311,7 +311,7 @@ void EddieController::rotate(int16_t angular)
   int8_t left, right, previous_power;
 
   eddiebot_msgs::ResetEncoder reset;
-  eddie_reset_.call(reset);
+  // eddie_reset_.call(reset);
   for (int i = 0; !(headed = eddie_heading_.call(heading)) && i < 5; i++)
     usleep(100);
   if (!headed)
