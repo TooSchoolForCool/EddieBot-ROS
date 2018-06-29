@@ -58,6 +58,7 @@
 #include <eddiebot_msgs/Rotate.h>
 #include <eddiebot_msgs/StopAtDistance.h>
 #include <eddiebot_msgs/DriveWithDistance.h>
+#include <eddiebot_msgs/Encoders.h>
 
 class Eddie {
 public:
@@ -202,11 +203,9 @@ public:
     //Send a series of 3 carriage returns to reset the FW serial buffer: "\r\r\r"
     const std::string FLUSH_BUFFERS_STRING;
 
-    eddiebot_msgs::Ping getPingData();
-    eddiebot_msgs::ADC getADCData();
-
     void publishPingData();
     void publishADCData();
+    void publishEncodersData();
 
 private:
     sem_t mutex;
@@ -214,8 +213,12 @@ private:
     int tty_fd;
 
     ros::NodeHandle node_handle_;
+
     ros::Publisher ping_pub_;
     ros::Publisher adc_pub_;
+    // encoder_pub_ pulishes encoder data from left and right encoders
+    ros::Publisher encoder_pub_;
+
     ros::ServiceServer accelerate_srv_;
     ros::ServiceServer drive_with_distance_srv_;
     ros::ServiceServer drive_with_power_srv_;
@@ -254,6 +257,13 @@ private:
             eddiebot_msgs::Rotate::Response &res);
     bool stopAtDistance(eddiebot_msgs::StopAtDistance::Request &req,
             eddiebot_msgs::StopAtDistance::Response &res);
+
+    // get ping data from eddiebot through seiral port
+    eddiebot_msgs::Ping getPingData();
+    // get adc data from eddiebot through serial port
+    eddiebot_msgs::ADC getADCData();
+    // get encoder data from eddiebot through serial port
+    bool getEncodersData(eddiebot_msgs::Encoders &data);
 };
 
 #endif	/* _EDDIE_H */

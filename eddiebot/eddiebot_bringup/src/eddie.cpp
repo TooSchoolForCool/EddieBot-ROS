@@ -34,7 +34,12 @@
  */
 
 #include "eddie.h"
+#include <iostream>
+
 typedef std::map<std::string, unsigned char[6] > CommandMap;
+
+// maximum number of tries to contact serial port
+#define MAX_N_TRIES   3
 
 Eddie::Eddie() :
   GPIO_COUNT(10),
@@ -82,6 +87,7 @@ Eddie::Eddie() :
   sem_init(&mutex, 0, 1);
   ping_pub_ = node_handle_.advertise<eddiebot_msgs::Ping > ("/eddie/ping_data", 1);
   adc_pub_ = node_handle_.advertise<eddiebot_msgs::ADC > ("/eddie/adc_data", 1);
+  encoder_pub_ = node_handle_.advertise<eddiebot_msgs::Encoders > ("/eddie/encoders_data", 1);
 
   accelerate_srv_ = node_handle_.advertiseService("acceleration_rate", &Eddie::accelerate, this);
   drive_with_distance_srv_ = node_handle_.advertiseService("drive_with_distance", &Eddie::driveWithDistance, this);
@@ -261,6 +267,33 @@ eddiebot_msgs::ADC Eddie::getADCData()
   return adc_data;
 }
 
+
+bool Eddie::getEncodersData(eddiebot_msgs::Encoders &data)
+{
+  std::string cmd = GET_ENCODER_TICKS_STRING;
+  std::string cmd_response = command(cmd);
+
+  if (cmd_response.substr(0, 5) != "ERROR" && cmd_response.size() >= 18)
+  {
+    std::stringstream value;
+    unsigned int tmp;
+    value << std::hex << cmd_response.substr(0, 8);
+    value >> tmp;
+    data.left = static_cast<int>(tmp);
+
+    value.str(std::string());
+    value.clear();
+    value << std::hex << cmd_response.substr(9, 8);
+    value >> tmp;
+    data.right = static_cast<int>(tmp);
+
+    return true;
+  }
+  else
+    return false;
+}
+
+
 void Eddie::publishPingData()
 {
   ping_pub_.publish(getPingData());
@@ -269,6 +302,22 @@ void Eddie::publishPingData()
 void Eddie::publishADCData()
 {
   adc_pub_.publish(getADCData());
+}
+
+void Eddie::publishEncodersData()
+{
+  int cnt = 0;
+  eddiebot_msgs::Encoders encoders_data;
+
+  if( !getEncodersData(encoders_data) && cnt < MAX_N_TRIES)
+    cnt++;
+
+  if(cnt == MAX_N_TRIES){
+    ROS_ERROR("[Eddie::publishEncodersData] Cannot contact serial port");
+    exit(-1);
+  }
+  else
+    encoder_pub_.publish(encoders_data);
 }
 
 bool Eddie::accelerate(eddiebot_msgs::Accelerate::Request &req,
@@ -376,13 +425,18 @@ bool Eddie::GetSpeed(eddiebot_msgs::GetSpeed::Request &req,
   std::string cmd_response = command(cmd);
   if (cmd_response.substr(0, 5) != "ERROR" && cmd_response.size() >= 10)
   {
+    uint16_t tmp;
     std::stringstream value;
     value << std::hex << cmd_response.substr(0, 4);
-    value >> res.left;
+    value >> tmp;
+    res.left = static_cast<uint16_t>(tmp);
+
     value.str(std::string());
     value.clear();
     value << std::hex << cmd_response.substr(5, 4);
-    value >> res.right;
+    value >> tmp;
+    res.right = static_cast<uint16_t>(tmp);
+    
     return true;
   }
   else
@@ -429,12 +483,13 @@ int main(int argc, char** argv)
   ROS_INFO("Parallax Board booting up");
   ros::init(argc, argv, "parallax_board");
   Eddie eddie; //set port to connect to Parallax controller board
-  ros::Rate loop_rate(10);
+  ros::Rate loop_rate(5);
 
   while (ros::ok())
   {
     eddie.publishPingData();
     eddie.publishADCData();
+    eddie.publishEncodersData();
 
     ros::spinOnce();
     loop_rate.sleep();

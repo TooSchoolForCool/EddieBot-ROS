@@ -54,6 +54,7 @@ add_message_files(
   ADC.msg
   BatteryLevel.msg
   Distances.msg
+  Encoders.msg
   KeyStroke.msg
   Ping.msg
   Speech.msg
