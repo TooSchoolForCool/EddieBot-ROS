@@ -3,7 +3,6 @@
 
 using namespace std;
 
-
 EddieOdomPublisher::EddieOdomPublisher()
 {
     odom_pub_ = nh_.advertise<nav_msgs::Odometry>("odom", 50);
@@ -22,6 +21,8 @@ void EddieOdomPublisher::encoder_cb_(const eddiebot_msgs::Encoders::ConstPtr &ms
     current_time_ = ros::Time::now();
     double dt = (current_time_ - last_time_).toSec();
 
+    // msg->left(right) is to the total tick of the left(right) encoder
+    // delta_left_cnt represents the increment of the left encoder ticks
     int delta_left_cnt = msg->left - prev_left_encoder_cnt_;
     int delta_right_cnt = msg->right - prev_right_encoder_cnt_;
 

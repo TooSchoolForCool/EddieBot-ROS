@@ -70,6 +70,7 @@
   <exec_depend>message_generation</exec_depend>
   <exec_depend>eddiebot_msgs</exec_depend>
   <exec_depend>eddiebot_odom</exec_depend>
+  <exec_depend>openni2_launch</exec_depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->

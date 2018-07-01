@@ -26,7 +26,7 @@
   -->
   
   <arg name="database_path"     default="rtabmap.db"/>
-  <arg name="rgbd_odometry"     default="true"/>
+  <arg name="rgbd_odometry"     default="false"/>
   <arg name="rtabmapviz"        default="false"/>
   <arg name="localization"      default="false"/>
   <arg name="simulation"        default="false"/>
