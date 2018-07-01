@@ -8,8 +8,8 @@ This packages define the urdf model of every eddiebot component for generating `
 
 ### Package Structure
 
-- [urdf](https://github.com/TooSchoolForCool/CIESSL/tree/master/eddiebot/eddiebot_description/urdf) defined every component of the robot
-- [robots](https://github.com/TooSchoolForCool/CIESSL/tree/master/eddiebot/eddiebot_description/robots) builds the robot by using components defined in [urdf](https://github.com/TooSchoolForCool/CIESSL/tree/master/eddiebot/eddiebot_description/urdf)
+- [urdf](urdf) folder defined every component of the robot
+- [robots](robots) folder builds the robot by using components defined in [urdf](urdf)
 
 
 

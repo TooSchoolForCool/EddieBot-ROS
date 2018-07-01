@@ -6,5 +6,5 @@ The `eddiebot_bringup` package provides `roslaunch` scripts for starting the Edd
 
 ### Launch File Description
 
-- [minimal.launch](https://github.com/TooSchoolForCool/CIESSL/blob/master/eddiebot/eddiebot_bringup/launch/minimal.launch): this file provides the minimal launch of the eddiebot, which will boot the IR sensor, Ping sensor and the motor controller
+- [minimal.launch](/launch/minimal.launch): this file provides the minimal launch of the eddiebot for running eddiebot applications, which will boot up the IR sensor, Ping sensor, motor controller, camera driver and Odometry publisher.
 
