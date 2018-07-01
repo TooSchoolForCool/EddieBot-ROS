@@ -31,11 +31,12 @@ roslaunch eddiebot_rviz_launchers view_model.launch model:=<model_name>
 
 Following models are provided:
 
-- eddie_kinect
+- eddie_kinect_v1
+- eddie_kinect_v2
 - eddie_primesense
 
 
 
-Here is an example for the model `eddie_kinect`
+Here is an example for the model `eddie_kinect_v1`
 
-![eddie-kinect-model-demo](assets/eddie-kinect-model-demo.png)
+![eddie-kinect-model-demo](assets/eddie-kinect_v1-model-demo.png)

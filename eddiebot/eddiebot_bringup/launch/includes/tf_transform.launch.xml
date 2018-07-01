@@ -3,7 +3,7 @@
   <!-- Pulish TF transform information -->
 
   <!-- Define URDF model -->
-  <arg name="robot_model" default="eddie_kinect" />
+  <arg name="robot_model" default="eddie_kinect_v1" />
   <arg name="urdf_file" default="xacro --inorder '$(find eddiebot_description)/robots/$(arg robot_model).urdf.xacro'" />
   
   <param name="robot_description" command="$(arg urdf_file)" />

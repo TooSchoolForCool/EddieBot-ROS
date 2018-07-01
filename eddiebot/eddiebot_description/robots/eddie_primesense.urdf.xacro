@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<robot name="arlobot" xmlns:xacro="http://ros.org/wiki/xacro">
+<robot name="eddiebot" xmlns:xacro="http://ros.org/wiki/xacro">
 
   <!-- A common file to tie together all of the bits and bobs of the entire robot
   Modeled after turtlebot_description 
