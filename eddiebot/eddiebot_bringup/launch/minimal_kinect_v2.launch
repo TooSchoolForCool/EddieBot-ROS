@@ -1,0 +1,19 @@
+<launch>
+
+  <!-- Launch tf transform -->
+  <include file="$(find eddiebot_bringup)/launch/includes/tf_transform.launch.xml">
+    <arg name="robot_model" value="eddie_kinect_v2" />
+  </include>
+
+  <!-- Launch eddiebot driver -->
+  <include file="$(find eddiebot_bringup)/launch/includes/eddie_driver.launch.xml" />
+
+  <!-- Pulish eddiebot odometry information -->
+  <include file="$(find eddiebot_odom)/launch/eddie_odometry.launch" />
+
+  <!-- Launch Camera Driver (Kinect v2) -->
+  <include file="$(find openni2_launch)/launch/openni2.launch">
+  	<arg name="depth_registration" value="true" />
+  </include>
+
+</launch>
