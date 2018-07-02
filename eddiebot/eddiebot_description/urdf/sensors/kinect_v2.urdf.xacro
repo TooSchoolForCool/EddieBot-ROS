@@ -5,9 +5,9 @@
 
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="kinect2">
 
-  <xacro:property name="cam_px" value="0.005"/>
-  <xacro:property name="kinect_v2_cam_py" value="0.095"/>
-  <xacro:property name="kinect_v2_cam_pz" value="0.0275" />
+  <xacro:property name="kinect_v2_cam_px" value="0.0975"/>
+  <xacro:property name="kinect_v2_cam_py" value="0.01" />
+  <xacro:property name="kinect_v2_cam_pz" value="0" />
 
   <!-- This is the tilt across the horizontal when looking straight at the camera. Probably important, but hard to see if it is. -->
   <xacro:property name="cam_or" value="0" />
@@ -27,14 +27,14 @@
 
     <!-- Joint connecting the parent to our frame_in -->
     <joint name="kinect2_in_joint" type="fixed">
-      <origin xyz="0 0 0.035" rpy="${cam_or} ${cam_op} ${cam_oy}"/>
+      <origin xyz="0 0 0.035" rpy="${-M_PI/2} 0 ${-M_PI/2}"/>
       <parent link="${parent}"/>
-      <child link="camera_link"/>
+      <child link="kinect2_link"/>
     </joint>
 
-    <link name="camera_link">
+    <link name="kinect2_link">
       <visual>
-        <origin rpy="0 0 ${M_PI/2}" xyz="${cam_px} ${kinect_v2_cam_py} ${kinect_v2_cam_pz}"/>
+        <origin rpy="0 0 0" xyz="${kinect_v2_cam_px} ${kinect_v2_cam_py} ${kinect_v2_cam_pz}"/>
         <geometry>
           <!-- these meshes were exported in mm, so scale back to m -->
           <mesh filename="package://eddiebot_description/meshes/sensors/kinect2_origin_on_rgb_optical_frame.stl" scale="0.001 0.001 0.001"/>
@@ -43,7 +43,7 @@
       </visual>
 
       <collision>
-        <origin rpy="0 0 ${M_PI/2}" xyz="${cam_px} ${kinect_v2_cam_py} ${kinect_v2_cam_pz}"/>
+        <origin rpy="0 0 0" xyz="${kinect_v2_cam_px} ${kinect_v2_cam_py} ${kinect_v2_cam_pz}"/>
         <!-- <origin xyz="0 0 0" rpy="0 0 0" /> -->
         <geometry>
           <mesh
