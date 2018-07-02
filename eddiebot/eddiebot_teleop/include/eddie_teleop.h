@@ -41,7 +41,7 @@
 #include <termios.h>
 #include <stdio.h>
 #include <fcntl.h>
-#include <eddiebot_msgs/Velocity.h>
+#include <geometry_msgs/Twist.h>
 #include <eddiebot_msgs/KeyStroke.h>
 
 #define KEYCODE_U 0x41

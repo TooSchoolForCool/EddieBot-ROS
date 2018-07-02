@@ -71,6 +71,10 @@
   <exec_depend>eddiebot_msgs</exec_depend>
   <exec_depend>eddiebot_odom</exec_depend>
   <exec_depend>openni2_launch</exec_depend>
+  <exec_depend>kinect2_bridge</exec_depend>
+  <exec_depend>yocs_cmd_vel_mux</exec_depend>
+  <exec_depend>eddiebot_teleop</exec_depend>
+  <exec_depend>eddiebot_vel_controller</exec_depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->

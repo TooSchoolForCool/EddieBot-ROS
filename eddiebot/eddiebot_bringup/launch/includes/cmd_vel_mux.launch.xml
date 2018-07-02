@@ -1,0 +1,28 @@
+<!--
+  Example standalone launcher for the velocity multiplexer.
+  
+  For best results you would usually load this into the core control system
+  to avoid latency for reactive controllers. However for other apps, running
+  it standalone with a similar configuration will also work.
+ -->
+
+<launch>
+
+  <arg name="nodelet_manager_name"  value="nodelet_manager"/>
+  <arg name="config_file"           value="$(find eddiebot_bringup)/param/cmd_vel_mux_config.yaml"/>
+  
+  <!-- For cmd_vel_mux, it runs in nodelet -->
+
+  <!-- nodelet manager -->
+  <node pkg="nodelet" type="nodelet" name="$(arg nodelet_manager_name)" args="manager"/>
+  
+  <!-- velocity mulitplexer -->
+  <node pkg="nodelet" type="nodelet" name="yocs_cmd_vel_mux"
+        args="load yocs_cmd_vel_mux/CmdVelMuxNodelet $(arg nodelet_manager_name)">
+    <param name="yaml_cfg_file" value="$(arg config_file)"/>
+
+    <!-- remap cmd_vel_mux to eddiebot controller subscribed topic -->
+    <!-- <remap from="yocs_cmd_vel_mux/output/cmd_vel" to="/eddie/command_velocity"/> -->
+  </node>
+
+</launch>

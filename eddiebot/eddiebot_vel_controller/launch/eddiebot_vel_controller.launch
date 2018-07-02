@@ -1,6 +1,9 @@
 <launch>
 
   <!-- Boot up eddiebot cmd_vel controller -->
-  <node pkg="eddiebot_vel_controller" type="eddie_vel_controller" name="eddie_vel_controller" />
+  <node pkg="eddiebot_vel_controller" type="eddie_vel_controller" name="eddie_vel_controller" >
+  	<remap from="raw_cmd_vel" to="/yocs_cmd_vel_mux/output/cmd_vel"/>
+  	<remap from="/eddie/cmd_vel" to="/eddie/command_velocity"/>
+  </node>
 
 </launch>

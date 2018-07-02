@@ -1,7 +1,7 @@
-<!--%Tag(FULL)%-->
 <launch>
 
-    <node pkg="eddiebot_teleop" type="eddie_teleop" name="eddie_teleop" output="screen" />
+    <node pkg="eddiebot_teleop" type="eddie_teleop" name="eddie_teleop" output="screen" >
+    	<remap from="/eddie/keyop_cmd_vel" to="yocs_cmd_vel_mux/input/teleop"/>
+    </node>
     
 </launch>
-<!--%EndTag(FULL)%-->

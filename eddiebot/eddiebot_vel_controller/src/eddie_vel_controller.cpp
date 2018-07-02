@@ -6,7 +6,7 @@ EddieVelController::EddieVelController()
 {
     vel_pub_ = nh_.advertise<eddiebot_msgs::Velocity>("/eddie/cmd_vel", 5);
 
-    cmd_vel_sub_ = nh_.subscribe("/cmd_vel", 1, 
+    cmd_vel_sub_ = nh_.subscribe("raw_cmd_vel", 1, 
         &EddieVelController::cmd_vel_callback_, this);
 }
 

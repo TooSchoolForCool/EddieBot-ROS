@@ -33,5 +33,6 @@
     <!-- <remap from="cmd_vel" to="navigation_velocity_smoother/raw_cmd_vel"/> -->
     <remap from="odom" to="$(arg odom_topic)"/>
     <!-- <remap from="scan" to="$(arg laser_topic)"/> -->
+    <remap from="cmd_vel" to="yocs_cmd_vel_mux/input/move_base_raw_cmd_vel"/>
   </node>
 </launch>

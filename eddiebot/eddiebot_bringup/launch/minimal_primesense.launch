@@ -8,6 +8,12 @@
   <!-- Launch eddiebot driver -->
   <include file="$(find eddiebot_bringup)/launch/includes/eddie_driver.launch.xml" />
 
+  <!-- Launch velocity commands multiplexer -->
+  <include file="$(find eddiebot_bringup)/launch/includes/cmd_vel_mux.launch.xml" />
+
+  <!-- Launch eddiebot velocity controller -->
+  <include file="$(find eddiebot_vel_controller)/launch/eddiebot_vel_controller.launch" />
+    
   <!-- Pulish eddiebot odometry information -->
   <include file="$(find eddiebot_odom)/launch/eddie_odometry.launch" />
 

@@ -38,7 +38,7 @@
 EddieTeleop::EddieTeleop() :
   linear_(0), angular_(0), l_scale_(2.0), a_scale_(2.0)
 {
-  velocity_pub_ = node_handle_.advertise<eddiebot_msgs::Velocity > ("/eddie/command_velocity", 1);
+  velocity_pub_ = node_handle_.advertise<geometry_msgs::Twist > ("/eddie/keyop_cmd_vel", 1);
   keystroke_pub_ = node_handle_.advertise<eddiebot_msgs::KeyStroke > ("/eddie/key_stroke", 1);
 
   node_handle_.param("angular_scale", a_scale_, a_scale_);
@@ -116,9 +116,16 @@ void EddieTeleop::keyLoop()
 
     if (move)
     {
-      eddiebot_msgs::Velocity vel;
-      vel.angular = angular_ * a_scale_;
-      vel.linear = linear_ * l_scale_;
+      geometry_msgs::Twist vel;
+      
+      vel.linear.x = linear_ * l_scale_;
+      vel.linear.y = 0;
+      vel.linear.z = 0;
+
+      vel.angular.x = 0;
+      vel.angular.y = 0;
+      vel.angular.z = angular_ * a_scale_;
+      
       velocity_pub_.publish(vel);
       move = false;
     }
