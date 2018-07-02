@@ -121,9 +121,6 @@
       <remap from="scan"            to="/scan"/>
     </node>
     
-    <!-- <node pkg="rtabmap_ros" type="map_assembler" name="map_ass">
-      <param name="_cloud_voxel_size" value="0.05" />
-      <remap from="/rtabmap/mapData"       to="mapData"/>
-    </node> -->
   </group>
+
 </launch>
