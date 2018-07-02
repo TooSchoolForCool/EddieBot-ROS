@@ -1,0 +1,6 @@
+<launch>
+
+  <!-- Boot up eddiebot cmd_vel controller -->
+  <node pkg="eddiebot_vel_controller" type="eddie_vel_controller" name="eddie_vel_controller" />
+
+</launch>
