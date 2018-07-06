@@ -12,5 +12,5 @@ Here is a brief introduction to every package,
 - **[eddiebot_msgs](eddiebot_msgs)** defines eddiebot related messages and services
 - **[eddiebot_teleop](eddiebot_teleop)** provides teleoperation for eddiebot by using keyboard
 - **[eddiebot_odom](eddiebot_odom)** generates [Odometry](http://wiki.ros.org/navigation/Tutorials/RobotSetup/Odom) topic based on encoder information
-- **[eddiebot_vel_controller](eddiebot_vel_controller)** implement a function that convert ros standard velocity command message (i.e., [geometry_msgs/Twist](http://docs.ros.org/api/geometry_msgs/html/msg/Twist.html)) into eddiebot [self-defined velocity command](../eddiebot_msgs/msg/Velocity.msg).
+- **[eddiebot_vel_controller](eddiebot_vel_controller)** implement a function that convert ros standard velocity command message (i.e., [geometry_msgs/Twist](http://docs.ros.org/api/geometry_msgs/html/msg/Twist.html)) into eddiebot [self-defined velocity command](eddiebot_msgs/msg/Velocity.msg).
 
