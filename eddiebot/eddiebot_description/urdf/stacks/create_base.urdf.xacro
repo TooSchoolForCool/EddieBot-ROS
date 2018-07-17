@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <robot name="eddiebot_create_base" xmlns:xacro="http://ros.org/wiki/xacro">
-
+  <xacro:property name="M_PI" value="3.1415926535897931" />
   <!-- Macro for creating eddiebot base. -->
 
   <!-- <xacro:property name="base_x" value="0.33" /> -->
@@ -100,6 +100,10 @@
       </inertial>
 
       <visual>
+        <!-- <geometry>
+          <cylinder length="0.061" radius="0.05"/>
+        </geometry>
+        <origin rpy="${M_PI/2} 0 0" xyz="0 0 -0.05"/> -->
         <origin xyz="0 0 0" rpy="-1.5707 0 1.5707" />
         <geometry>
           <mesh filename="package://eddiebot_description/meshes/28971-Caster-Wheel-Kit-v1.0.stl"/>
@@ -108,6 +112,13 @@
           <color rgba="0.6 0.6 0.6 1"/>
         </material>
       </visual>
+
+      <collision>
+        <geometry>
+          <cylinder length="0.061" radius="0.05"/>
+        </geometry>
+        <origin rpy="${M_PI/2} 0 0" xyz="0 0 -0.05"/>
+      </collision>
 
     </link>
 
@@ -135,6 +146,13 @@
           <color rgba="0.6 0.6 0.6 1"/>
         </material>
       </visual>
+
+      <collision>
+        <geometry>
+          <cylinder length="0.061" radius="0.05"/>
+        </geometry>
+        <origin rpy="${M_PI/2} 0 0" xyz="0 0 -0.05"/>
+      </collision>
 
     </link>
 
