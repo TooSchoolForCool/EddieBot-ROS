@@ -7,6 +7,7 @@
 #include <nav_msgs/Odometry.h>
 
 #define PI      3.14159265359
+#define TWOPI   (PI * 2)
 // encoder counter per revolution
 #define COUNTS_PER_REVOLUTION   144
 // Wheel Radius

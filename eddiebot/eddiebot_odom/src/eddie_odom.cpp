@@ -1,5 +1,6 @@
 #include "eddie_odom.h"
 #include <iostream>
+#include <stdio.h>
 
 using namespace std;
 
@@ -28,17 +29,19 @@ void EddieOdomPublisher::encoder_cb_(const eddiebot_msgs::Encoders::ConstPtr &ms
 
     double delta_th = 1.0 * (delta_right_cnt - delta_left_cnt) * DISTANCE_PER_COUNT / WHEEL_BASE;
     double delta_dist = 0.5 * (delta_right_cnt + delta_left_cnt) * DISTANCE_PER_COUNT;
-    double delta_x = delta_dist * cos(delta_th);
-    double delta_y = delta_dist * sin(delta_th);
+    double delta_x = delta_dist * cos(th_);
+    double delta_y = delta_dist * sin(th_);
 
     x_ += delta_x;
     y_ += delta_y;
     th_ += delta_th;
 
-    if(th_ > PI)
-        th_ -= PI * 2;
-    else if(th_ <= -PI)
-        th_ += PI * 2;
+    if(th_ > TWOPI)
+        th_ -= TWOPI;
+    else if(th_ <= -TWOPI)
+        th_ += TWOPI;
+
+    // printf("x = %lf, y = %lf, th = %lf\n", x_, y_, th_);
 
     prev_left_encoder_cnt_ = msg->left;
     prev_right_encoder_cnt_ = msg->right;
