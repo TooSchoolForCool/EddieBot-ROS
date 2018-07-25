@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
   <arg name="gui"        default="true"/>
-  <arg name="world_file" default="$(find eddiebot_gazebo)/worlds/bh9f_lab_empty.world"/>
+  <arg name="world_file" default="$(find eddiebot_gazebo)/worlds/bh9f_lab_full.world"/>
 
   <arg name="base"       default="kobuki"/> <!-- create, roomba -->
   <arg name="stacks"     default="hexagons"/>  <!-- circles, hexagons -->
