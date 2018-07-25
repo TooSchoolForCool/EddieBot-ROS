@@ -2,6 +2,7 @@
 <launch>
   <arg name="gui"        default="true"/>
   <arg name="world_file" default="$(find eddiebot_gazebo)/worlds/bh9f_lab.world"/>
+  <!-- <arg name="world_file" default="/home/vcla/bh9f_lab.world"/> -->
 
   <arg name="base"       default="kobuki"/> <!-- create, roomba -->
   <arg name="stacks"     default="hexagons"/>  <!-- circles, hexagons -->
@@ -25,7 +26,7 @@
   </node>
 
   <!-- Fake laser -->
-  <!-- <node pkg="nodelet" type="nodelet" name="laserscan_nodelet_manager" args="manager"/>
+  <node pkg="nodelet" type="nodelet" name="laserscan_nodelet_manager" args="manager"/>
   <node pkg="nodelet" type="nodelet" name="depthimage_to_laserscan"
         args="load depthimage_to_laserscan/DepthImageToLaserScanNodelet laserscan_nodelet_manager">
     <param name="scan_height" value="10"/>
@@ -33,5 +34,5 @@
     <param name="range_min" value="0.45"/>
     <remap from="image" to="/camera/depth/image_raw"/>
     <remap from="scan" to="/scan"/>
-  </node> -->
+  </node>
 </launch>

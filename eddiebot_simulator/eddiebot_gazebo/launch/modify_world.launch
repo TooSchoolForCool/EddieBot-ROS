@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <launch>
   <arg name="gui"        default="true"/>
-  <!-- <arg name="world_file" default="$(find eddiebot_gazebo)/worlds/bh9f_lab.world"/> -->
-  <arg name="world_file" default="/home/vcla/bh9f_lab.world"/>
+  <arg name="world_file" default="$(find eddiebot_gazebo)/worlds/bh9f_lab.world"/>
+  <!-- <arg name="world_file" default="/home/vcla/bh9f_lab.world"/> -->
 
   
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
