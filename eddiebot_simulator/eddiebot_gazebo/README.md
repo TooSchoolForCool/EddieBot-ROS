@@ -50,7 +50,7 @@ Open a new terminal, run following command to start `rviz`,
 roslaunch eddiebot_rviz_launchers gazebo_mapping.launch
 ```
 
-*Note: you can change the simulated world by modifying [turtlebot_world.launch](eddiebot_gazebo/launch/turtlebot_world.launch) file or using parameter `world_name:=<new_world_name>`* 
+*Note: you can change the simulated world by modifying [turtlebot_world.launch](launch/turtlebot_world.launch) file or using parameter `world_name:=<new_world_name>`* 
 
 ### 2.2 SLAM
 
@@ -92,4 +92,4 @@ roslaunch eddiebot_gazebo rtabmap_gazebo.launch localization:=true
 
 *Note: by default, map database is store in ~/.ros/rtabmap.db*
 
-For more configuration in rtabmap, please read the file [rtabmap_gazebo.launch](eddiebot_gazebo/launch/rtabmap_gazebo.launch) 
+For more configuration in rtabmap, please read the file [rtabmap_gazebo.launch](launch/rtabmap_gazebo.launch) 
