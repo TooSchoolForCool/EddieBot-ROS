@@ -4,7 +4,7 @@ This package implements eddiebot navigation stack, which performs map building a
 
 
 
-## 1. Dependency
+## 1. Dependencies
 
 For running the eddiebot navigation stack, following packages should be installed
 
