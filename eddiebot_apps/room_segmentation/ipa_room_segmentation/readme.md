@@ -1,6 +1,6 @@
 # General Procedure
 
-1. Change the algorithm parameters in ros/launch/room_segmentation_action_server_params.yaml in ros/launch to the wanted algorithms and settings.
+1. Change the algorithm parameters in ros/params/room_segmentation_action_server_params.yaml in ros/launch to the wanted algorithms and settings.
 	* room_segmentation_algorithm: Choose which segmentation algorithm should be used.
 	* display_segmented_map: Specify if you want a window to pop up after the given map has been segmented, showing the results. To continue the program press any button in the window.
 	* train_semantic, train_vrf: Booleans that show, if the semantic or voronoi random field segmentation should be trained. For details of this training method see the further document.

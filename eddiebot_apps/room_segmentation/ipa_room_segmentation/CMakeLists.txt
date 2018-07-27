@@ -11,6 +11,7 @@ set(catkin_RUN_PACKAGES
 	roscpp
 	roslib
 	sensor_msgs
+	geometry_msgs
 )
 
 set(catkin_BUILD_PACKAGES
