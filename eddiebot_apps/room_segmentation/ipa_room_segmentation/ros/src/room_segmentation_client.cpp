@@ -106,10 +106,10 @@ cv::Mat RoomSegmentationClient::map_parser_(const std::vector<signed char> &data
     for(int i = 0; i < height; i++){
         for(int j = 0; j < width; j++){
             if(data[i * width + j] == -1 || data[i * width + j] >= 90){
-                img.at<unsigned char>(i, j) = 0;
+                img.at<unsigned char>(height-i-1, j) = 0;
             }
             else{
-                img.at<unsigned char>(i, j) = 255;   
+                img.at<unsigned char>(height-i-1, j) = 255;   
             }
         }
     }
