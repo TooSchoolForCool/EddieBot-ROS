@@ -31,7 +31,8 @@ void RoomSegmentationClient::launch()
 
 
 // save room segmentation to file
-void RoomSegmentationClient::save2json_(room_segmentation::MapSegmentationResultConstPtr result)
+void RoomSegmentationClient::save2json_(room_segmentation::MapSegmentationResultConstPtr result,
+    double resolution, double x, double y)
 {
     rapidjson::StringBuffer buffer;
     rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
@@ -53,6 +54,17 @@ void RoomSegmentationClient::save2json_(room_segmentation::MapSegmentationResult
         writer.EndObject();
     }
     writer.EndArray();
+
+    writer.Key("resolution");
+    writer.Double(resolution);
+
+    writer.Key("origin");
+    writer.StartObject();
+    writer.Key("x");
+    writer.Double(x);
+    writer.Key("y");
+    writer.Double(y);
+    writer.EndObject();
 
     writer.Key("map");
     writer.StartArray();
@@ -79,7 +91,7 @@ void RoomSegmentationClient::save2json_(room_segmentation::MapSegmentationResult
 }
 
 
-cv::Mat RoomSegmentationClient::segment_room_(cv::Mat &img, double resolution, int x, int y)
+cv::Mat RoomSegmentationClient::segment_room_(cv::Mat &img, double resolution, double x, double y)
 {
     sensor_msgs::Image labeling;
     cv_bridge::CvImage cv_image;
@@ -122,7 +134,8 @@ cv::Mat RoomSegmentationClient::segment_room_(cv::Mat &img, double resolution, i
         colour_segmented_map.convertTo(colour_segmented_map, CV_8U);
         cv::cvtColor(colour_segmented_map, colour_segmented_map, CV_GRAY2BGR);
 
-        save2json_(result_seg);
+        // save segmented map information to a json file
+        save2json_(result_seg, resolution, x, y);
 
         for(size_t i = 1; i <= result_seg->room_information_in_pixel.size(); ++i)
         {
