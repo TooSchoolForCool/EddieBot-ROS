@@ -1,9 +1,16 @@
 #include <room_segmentation/room_segmentation_client.h>
+#include <rapidjson/document.h>
+#include <rapidjson/writer.h>
+#include <rapidjson/stringbuffer.h>
+#include <iostream>
+#include <fstream>
+#include <vector>
 
 RoomSegmentationClient::RoomSegmentationClient()
 {
 
 }
+
 
 void RoomSegmentationClient::launch()
 {
@@ -21,6 +28,56 @@ void RoomSegmentationClient::launch()
     cv::Mat map_img = map_parser_(map_data, width, height);
     cv::Mat segmented_map = segment_room_(map_img, resolution, origin_pos.x, origin_pos.y);
 }
+
+
+// save room segmentation to file
+void RoomSegmentationClient::save2json_(room_segmentation::MapSegmentationResultConstPtr result)
+{
+    rapidjson::StringBuffer buffer;
+    rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+ 
+    writer.StartObject();
+ 
+    writer.Key("n_rooms");
+    writer.Int(result->room_information_in_pixel.size());
+
+    writer.Key("room_centers");
+    writer.StartArray();
+    for(int i = 0; i < result->room_information_in_pixel.size(); i++)
+    {
+        writer.StartObject();
+        writer.Key("x");
+        writer.Int(result->room_information_in_pixel[i].room_center.x);
+        writer.Key("y");
+        writer.Int(result->room_information_in_pixel[i].room_center.y);        
+        writer.EndObject();
+    }
+    writer.EndArray();
+
+    writer.Key("map");
+    writer.StartArray();
+    cv_bridge::CvImagePtr cv_ptr_obj;
+    cv_ptr_obj = cv_bridge::toCvCopy(result->segmented_map, sensor_msgs::image_encodings::TYPE_32SC1);
+    cv::Mat segmented_map = cv_ptr_obj->image;
+    for(int i = 0; i < segmented_map.rows; i++){
+        writer.StartArray();
+        for(int j = 0; j < segmented_map.cols; j++){
+            writer.Int(segmented_map.at<int>(i, j));
+        }
+        writer.EndArray();
+    }
+    writer.EndArray();
+
+    writer.EndObject();
+
+    std::string output_path;
+    nh_.param<std::string>("/json_output", output_path, "segmented_map.json");
+    
+    std::ofstream out(output_path.c_str());
+    out << buffer.GetString() << std::endl;
+    std::cout << "Json file is save at: " << output_path << std::endl;
+}
+
 
 cv::Mat RoomSegmentationClient::segment_room_(cv::Mat &img, double resolution, int x, int y)
 {
@@ -64,6 +121,9 @@ cv::Mat RoomSegmentationClient::segment_room_(cv::Mat &img, double resolution, i
         cv::Mat colour_segmented_map = segmented_map.clone();
         colour_segmented_map.convertTo(colour_segmented_map, CV_8U);
         cv::cvtColor(colour_segmented_map, colour_segmented_map, CV_GRAY2BGR);
+
+        save2json_(result_seg);
+
         for(size_t i = 1; i <= result_seg->room_information_in_pixel.size(); ++i)
         {
             //choose random color for each room
@@ -93,7 +153,7 @@ cv::Mat RoomSegmentationClient::segment_room_(cv::Mat &img, double resolution, i
             cv::circle(colour_segmented_map, current_center, 2, CV_RGB(0,0,255), CV_FILLED);
         }
 
-        cv::imshow("segmentation", colour_segmented_map);
+        cv::imshow("segmented_map", colour_segmented_map);
         cv::waitKey();
 
         return colour_segmented_map;
@@ -101,6 +161,7 @@ cv::Mat RoomSegmentationClient::segment_room_(cv::Mat &img, double resolution, i
 
     return img;
 }
+
 
 cv::Mat RoomSegmentationClient::map_parser_(const std::vector<signed char> &data, int width, int height)
 {

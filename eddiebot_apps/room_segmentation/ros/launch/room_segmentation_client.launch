@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
 <launch>
-
-  <node ns="room_segmentation" pkg="room_segmentation" type="room_segmentation_client" name="room_segmentation_client" output="screen"/>
+  <param name="json_output" type="string" value="bh9f_lab_map.json" />
+  
+  <node ns="room_segmentation" pkg="room_segmentation" type="room_segmentation_client" name="room_segmentation_client" output="screen">
+  </node>
 
 </launch>

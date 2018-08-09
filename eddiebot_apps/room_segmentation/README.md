@@ -45,7 +45,7 @@ Then, launch the room segmentation client, which is implementation in [room_segm
 roslaunch room_segmentation room_segmentation_client.launch
 ```
 
-*Note: room_segmentation_client subscribes the "/map" topic, make sure the topic does exist*. 
+*Note: room_segmentation_client subscribes the "/map" topic, make sure this topic does exist. You can try `map_server` to publish the /map topic.*
 
 ### 2.3 Data Format Sepcification
 

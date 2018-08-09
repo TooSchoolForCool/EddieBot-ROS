@@ -9,6 +9,7 @@ set(catkin_RUN_PACKAGES
 	nav_msgs
 	opengm
 	roscpp
+	rospy
 	roslib
 	sensor_msgs
 	geometry_msgs
