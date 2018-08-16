@@ -15,8 +15,8 @@
     <param name="acceleration_speed" value="100" />
     
     <node pkg="eddiebot_bringup" type="eddie" name="eddie" />
-    <node pkg="eddiebot_bringup" type="eddie_ping" name="eddie_ping" />
-    <node pkg="eddiebot_bringup" type="eddie_adc" name="eddie_adc" />
+    <!-- <node pkg="eddiebot_bringup" type="eddie_ping" name="eddie_ping" />
+    <node pkg="eddiebot_bringup" type="eddie_adc" name="eddie_adc" /> -->
     <node pkg="eddiebot_bringup" type="eddie_controller" name="eddie_controller" />
     
 </launch>

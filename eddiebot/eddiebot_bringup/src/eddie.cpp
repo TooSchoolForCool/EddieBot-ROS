@@ -156,6 +156,7 @@ std::string Eddie::command(std::string str)
     if(count>=80)
     {
       ROS_ERROR("ERROR: NO PARALLAX EDDIE ROBOT IS CONNECTED.");
+      ROS_ERROR(str.c_str());
       break;
     }
   }
@@ -487,8 +488,8 @@ int main(int argc, char** argv)
 
   while (ros::ok())
   {
-    eddie.publishPingData();
-    eddie.publishADCData();
+    // eddie.publishPingData();
+    // eddie.publishADCData();
     eddie.publishEncodersData();
 
     ros::spinOnce();
