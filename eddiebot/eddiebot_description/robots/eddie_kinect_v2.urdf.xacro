@@ -16,5 +16,5 @@
   <create_base/>
   <circle_stack parent="base_link"/>
   <camera_stand parent="plate_0_link"/>
-  <sensor_kinect_v2 parent="camera_mount_link" />
+  <sensor_kinect_v2 parent="base_link" />
 </robot>

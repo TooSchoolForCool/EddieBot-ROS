@@ -7,7 +7,7 @@
 
   <xacro:property name="kinect_v2_cam_px" value="0.0975"/>
   <xacro:property name="kinect_v2_cam_py" value="0.01" />
-  <xacro:property name="kinect_v2_cam_pz" value="0" />
+  <xacro:property name="kinect_v2_cam_pz" value="0.15" />
 
   <!-- This is the tilt across the horizontal when looking straight at the camera. Probably important, but hard to see if it is. -->
   <xacro:property name="cam_or" value="0" />
