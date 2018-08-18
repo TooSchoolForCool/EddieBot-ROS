@@ -22,8 +22,8 @@
   	<arg name="publish_tf" value="true" />
   </include>
 
-  <!-- Launch Hokuyos LiDar -->
-  <include file="$(find eddiebot_bringup)/launch/includes/hokuyos_lidar.launch.xml">
+  <!-- Launch Hokuyo LiDar -->
+  <include file="$(find eddiebot_bringup)/launch/includes/hokuyo_lidar.launch.xml">
   </include>
 
 </launch>
