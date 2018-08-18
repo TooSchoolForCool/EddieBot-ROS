@@ -1,0 +1,29 @@
+<launch>
+
+  <!-- Launch tf transform -->
+  <include file="$(find eddiebot_bringup)/launch/includes/tf_transform.launch.xml">
+    <arg name="robot_model" value="eddie_kinect_v2" />
+  </include>
+
+  <!-- Launch eddiebot driver -->
+  <include file="$(find eddiebot_bringup)/launch/includes/eddie_driver.launch.xml" />
+
+  <!-- Launch velocity commands multiplexer -->
+  <include file="$(find eddiebot_bringup)/launch/includes/cmd_vel_mux.launch.xml" />
+
+  <!-- Launch eddiebot velocity controller -->
+  <include file="$(find eddiebot_vel_controller)/launch/eddiebot_vel_controller.launch" />
+
+  <!-- Pulish eddiebot odometry information -->
+  <include file="$(find eddiebot_odom)/launch/eddie_odometry.launch" />
+
+  <!-- Launch Camera Driver (Kinect v2) -->
+  <include file="$(find eddiebot_bringup)/launch/includes/kinect_v2_driver.launch.xml">
+  	<arg name="publish_tf" value="true" />
+  </include>
+
+  <!-- Launch Hokuyos LiDar -->
+  <include file="$(find eddiebot_bringup)/launch/includes/hokuyos_lidar.launch.xml">
+  </include>
+
+</launch>
