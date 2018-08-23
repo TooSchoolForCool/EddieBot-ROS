@@ -6,6 +6,8 @@
 #include <fstream>
 #include <vector>
 #include <algorithm>
+#include <time.h>
+#include <stdlib.h>
 
 RoomSegmentationClient::RoomSegmentationClient()
 {
@@ -220,6 +222,7 @@ cv::Mat RoomSegmentationClient::map_parser_(const std::vector<signed char> &data
 int main(int argc, char **argv)
 {
     ros::init(argc, argv, "room_segmentation_client");
+    srand (time(NULL));
 
     RoomSegmentationClient rsc;
     rsc.launch();
