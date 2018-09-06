@@ -5,6 +5,9 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <algorithm>
+#include <time.h>
+#include <stdlib.h>
 
 RoomSegmentationClient::RoomSegmentationClient()
 {
@@ -54,6 +57,27 @@ void RoomSegmentationClient::save2json_(room_segmentation::MapSegmentationResult
         writer.EndObject();
     }
     writer.EndArray();
+
+    writer.Key("boundary");
+    int min_x = 99999, min_y = 99999;
+    int max_x = -1, max_y = -1;
+    for(int i = 0; i < result->room_information_in_pixel.size(); i++)
+    {
+        min_x = std::min(min_x, (int)result->room_information_in_pixel[i].room_min_max.points[0].x);
+        min_y = std::min(min_y, (int)result->room_information_in_pixel[i].room_min_max.points[0].y);
+        max_x = std::max(max_x, (int)result->room_information_in_pixel[i].room_min_max.points[1].x);
+        max_y = std::max(max_y, (int)result->room_information_in_pixel[i].room_min_max.points[1].y);
+    }
+    writer.StartObject();
+    writer.Key("min_x");
+    writer.Int(min_x);
+    writer.Key("min_y");
+    writer.Int(min_y);
+    writer.Key("max_x");
+    writer.Int(max_x);
+    writer.Key("max_y");
+    writer.Int(max_y); 
+    writer.EndObject();
 
     writer.Key("resolution");
     writer.Double(resolution);
@@ -198,6 +222,7 @@ cv::Mat RoomSegmentationClient::map_parser_(const std::vector<signed char> &data
 int main(int argc, char **argv)
 {
     ros::init(argc, argv, "room_segmentation_client");
+    srand (time(NULL));
 
     RoomSegmentationClient rsc;
     rsc.launch();
