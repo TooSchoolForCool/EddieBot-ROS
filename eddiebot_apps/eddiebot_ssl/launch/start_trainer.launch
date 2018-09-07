@@ -4,5 +4,6 @@
 		<param name="room_dest" value="$(find eddiebot_ssl)/assets/room_dest.json" />
 		<param name="person_loc" value="$(find eddiebot_ssl)/assets/person_loc.json" />
 		<param name="approach_person" value="$(find eddiebot_ssl)/assets/approach_person.json" />
+		<param name="sound_wave_model" value="$(find eddiebot_gazebo)/objects/sound_wave/model.sdf" />
 	</node>
 </launch>

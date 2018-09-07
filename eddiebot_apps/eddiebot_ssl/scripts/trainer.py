@@ -22,7 +22,7 @@ def set_person_pose(mc, person_loc, room_id):
 
     mc.goto("person_standing_0", x, y, yaw)
 
-    return idx
+    return x, y, idx
 
 
 def explore_room(rc, room_dst, room_id):
@@ -36,26 +36,32 @@ def explore_room(rc, room_dst, room_id):
         rc.goto(x, y, yaw)
 
 
-def start_training(trace_history, room_dst, person_loc, approach_person):
+def start_training(trace_history, room_dst, person_loc, approach_person, sound_wave_model):
     rc = RobotController()
     mc = ModelController()
     
-    for trace in trace_history:
+    for i, trace in enumerate(trace_history):
+        print("-" * 60)
+        print("Current Time: {}, Sample: {}".format(rospy.get_rostime().secs, i))
+
         target_room = trace["target"]
+        # robot back to origin
+        explore_room(rc, room_dst, trace["origin"])
+        # move a person to dst and emit sound
+        px, py, pidx = set_person_pose(mc, person_loc, target_room)
+        mc.spawn_model("sound_wave", sound_wave_model, px, py, 2)
+        rospy.sleep(2)
+        mc.delete_model("sound_wave")
 
-        pidx = set_person_pose(mc, person_loc, target_room)
-
+        # robot actively explore the room according to the ranking result
         for next_room in trace["trace"]:
             if next_room == target_room:
-                print("find_goal: {}".format(next_room))
+                print("Sample {} find target room: {}".format(i, next_room))
                 app_pos = approach_person[str(target_room)][pidx]
                 rc.goto(app_pos["x"], app_pos["y"], app_pos["yaw"])
             else:
-                print("explore_room: {}".format(next_room))
+                print("Sample {} explore room: {}".format(i, next_room))
                 explore_room(rc, room_dst, next_room)
-
-        explore_room(rc, room_dst, trace["origin"])
-
 
 
 if __name__ == '__main__':
@@ -77,4 +83,9 @@ if __name__ == '__main__':
     json_data=open(approach_person).read()
     approach_person = json.loads(json_data)
 
-    start_training(trace_history, room_dst, person_loc, approach_person)
+    sound_wave_sdf = rospy.get_param("~sound_wave_model")
+    sound_wave_model = None
+    with open(sound_wave_sdf, "r") as f:
+        sound_wave_model = f.read()
+
+    start_training(trace_history, room_dst, person_loc, approach_person, sound_wave_model)
