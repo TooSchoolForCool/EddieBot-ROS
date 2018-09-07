@@ -3,5 +3,6 @@
 		<param name="trace_file" value="$(find eddiebot_ssl)/assets/3room_trace.json" />
 		<param name="room_dest" value="$(find eddiebot_ssl)/assets/room_dest.json" />
 		<param name="person_loc" value="$(find eddiebot_ssl)/assets/person_loc.json" />
+		<param name="approach_person" value="$(find eddiebot_ssl)/assets/approach_person.json" />
 	</node>
 </launch>

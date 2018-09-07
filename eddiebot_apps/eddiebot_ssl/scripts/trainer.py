@@ -22,11 +22,10 @@ def set_person_pose(mc, person_loc, room_id):
 
     mc.goto("person_standing_0", x, y, yaw)
 
-    return x, y, yaw
+    return idx
 
 
 def explore_room(rc, room_dst, room_id):
-    print("explore_room: {}".format(room_id))
     trace = room_dst[str(room_id)]
 
     for next_stop in trace:
@@ -37,21 +36,22 @@ def explore_room(rc, room_dst, room_id):
         rc.goto(x, y, yaw)
 
 
-def start_training(trace_history, room_dst, person_loc):
+def start_training(trace_history, room_dst, person_loc, approach_person):
     rc = RobotController()
     mc = ModelController()
-
     
     for trace in trace_history:
         target_room = trace["target"]
 
-        px, py, _ = set_person_pose(mc, person_loc, target_room)
+        pidx = set_person_pose(mc, person_loc, target_room)
 
         for next_room in trace["trace"]:
             if next_room == target_room:
                 print("find_goal: {}".format(next_room))
-                rc.goto(px - 0.1, py + 0.1, 0)
+                app_pos = approach_person[str(target_room)][pidx]
+                rc.goto(app_pos["x"], app_pos["y"], app_pos["yaw"])
             else:
+                print("explore_room: {}".format(next_room))
                 explore_room(rc, room_dst, next_room)
 
         explore_room(rc, room_dst, trace["origin"])
@@ -73,4 +73,8 @@ if __name__ == '__main__':
     json_data=open(person_loc).read()
     person_loc = json.loads(json_data)
 
-    start_training(trace_history, room_dst, person_loc)
+    approach_person = rospy.get_param("~approach_person")
+    json_data=open(approach_person).read()
+    approach_person = json.loads(json_data)
+
+    start_training(trace_history, room_dst, person_loc, approach_person)
