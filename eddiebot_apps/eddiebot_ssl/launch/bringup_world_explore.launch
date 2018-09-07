@@ -1,0 +1,12 @@
+<launch>
+  <!-- Launch gazebo simulation world -->
+  <include file="$(find eddiebot_gazebo)/launch/turtlebot_world.launch">
+    <arg name="world_name" value="bh9f_lab_one_person" />
+  </include>
+
+  <!-- Load pre-built map and perform acml -->
+  <include file="$(find eddiebot_gazebo)/launch/acml_gazebo.launch">
+    <arg name="map_file" value="$(find eddiebot_gazebo)/assets/bh9f_lab_map.yaml" />
+  </include>
+  
+</launch>
