@@ -50,7 +50,7 @@ def start_training(trace_history, room_dst, person_loc, approach_person, sound_w
         # move a person to dst and emit sound
         px, py, pidx = set_person_pose(mc, person_loc, target_room)
         mc.spawn_model("sound_wave", sound_wave_model, px, py, 2)
-        rospy.sleep(2)
+        rospy.sleep(3)
         mc.delete_model("sound_wave")
 
         # robot actively explore the room according to the ranking result
@@ -59,6 +59,7 @@ def start_training(trace_history, room_dst, person_loc, approach_person, sound_w
                 print("Sample {} find target room: {}".format(i, next_room))
                 app_pos = approach_person[str(target_room)][pidx]
                 rc.goto(app_pos["x"], app_pos["y"], app_pos["yaw"])
+                rospy.sleep(1)
             else:
                 print("Sample {} explore room: {}".format(i, next_room))
                 explore_room(rc, room_dst, next_room)
