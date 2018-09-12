@@ -1,0 +1,6 @@
+<launch>
+  <!-- Launch Camera Driver (Kinect v2) -->
+  <include file="$(find eddiebot_bringup)/launch/includes/kinect_v2_driver.launch.xml">
+  	<arg name="publish_tf" value="true" />
+  </include>
+</launch>
