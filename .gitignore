@@ -1,6 +1,9 @@
 # Ignore the CMakeList.txt in root folder
 /CMakeLists.txt
 
+# ignore iai_kinect2
+iai_kinect2/
+
 # Ignore MacOS system file
 .DS_Store
 
