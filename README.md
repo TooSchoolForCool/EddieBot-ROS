@@ -6,19 +6,37 @@ This repo provides several ROS packages for [Parallax Eddie Robot](https://www.g
 
 ## 1. Demo
 
+**SLAM Map Building**
 
+![slam_result](demo/slam_result.png)
+
+**Room Segmentation**
+
+![room_segmentation](demo/room_segmentation.png)
+
+**Indoor-Environment Sound Source Localization Simulation**
+
+![ssl_simu](demo/ssl_simu.png)
 
 ## 2. Installation
 
+Several dependencies are need to be installed before using our EddieBot ROS packages. A more detailed instructions are provided in each package, a brief guideline is listed below:
 
+- [eddiebot bringup](eddiebot/eddiebot_bringup/#1-dependency)
+- [navigation stack](eddiebot_apps/eddiebot_navigation/#1-dependencies)
+- [room segmentation](eddiebot_apps/room_segmentation/#1-installation) (optional)
+- [gazebo environment](eddiebot_simulator/eddiebot_gazebo#1-installation) (optional)
+- [sound source localization simulation](eddiebot_apps/eddiebot_ssl#2-installation) (optional)
 
-## 3. Usage
+Note: you do not have to install ALL those dependencies, just install what you need.
 
+## 3. Usage &Brief Guideline
 
-
-## 4. Brief Guideline
+Here is a brief guideline for you to navigate this repo
 
 - [eddiebot](eddiebot) implements basic driver for running EddieBot
-- [eddiebot_apps](eddiebot_apps) implements several applications regarding to this project
+- [eddiebot_apps](eddiebot_apps) implements several applications of EddieBot, which includes: 1) EddieBot navigation; 2) SSL simulation; 3) Room segmentation
 - [eddiebot_simulator](eddiebot_simulator) implements eddiebot gazebo simulation environment
 - [eddiebot_viz](eddiebot_viz) provides visualization tools, like rviz, for eddiebot application
+
+Almost every package is carefully documented, you can find the installation instructions, the usage instructions, and the frequent Q&A in each individual package. Please navigate this repo and check it out.
